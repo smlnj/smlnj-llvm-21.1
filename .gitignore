@@ -39,3 +39,18 @@
 
 # debug information files
 *.dwo
+
+# clangd cache
+.cache
+
+# macOS
+.DS_Store
+
+# project files
+bin
+build
+smlnj/tests/*.s
+smlnj/tests/*.ll
+smlnj/tests/*.o
+/include
+/lib

@@ -1,3 +1,12 @@
+The code in the cmake and src directories is a modified version of the
+LLVM sources (https://llvm.org) and is covered by the license in
+src/LICENSE.TXT.
+
+The other code is part of the SML/NJ project and
+is covered by the SML/NJ License below.
+
+========================================
+
 BSD 3-Clause License
 
 Copyright (c) 2025, Standard ML of New Jersey
