@@ -1,16 +1,16 @@
 # CMake configuration for SML/NJ LLVM with JWA patches
 #
-# COPYRIGHT (c) 2024 The Fellowship of SML/NJ (https://www.smlnj.org)
+# COPYRIGHT (c) 2025 The Fellowship of SML/NJ (https://www.smlnj.org)
 # All rights reserved.
 #
 
-# LLVM 18.1 requires 3.20, but we require a more recent version
+# LLVM 21.1 requires 3.20, but we require a more recent version
 #
 cmake_minimum_required(VERSION 3.23.0)
 
 project(smlnj-llvm
-  VERSION 18.1.6
-  DESCRIPTION "LLVM 18.1.6 with modifications to support SML/NJ"
+  VERSION 21.1.6
+  DESCRIPTION "LLVM 21.1.6 with modifications to support SML/NJ"
   HOMEPAGE_URL https://smlnj.org
   LANGUAGES C CXX)
 
