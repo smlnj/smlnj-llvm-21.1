@@ -3,7 +3,7 @@
 This repository is a version of [**LLVM**](https://llvm.org) with support for the JWA
 calling convention.  It is meant to be used as a submodule for the development
 branch of [**Standard ML of New Jersey** (**SML/NJ**)](https://smlnj.org) and is based on **LLVM**
-version 21.1.6.
+version 21.1.7.
 
 ## Removed components
 
@@ -89,6 +89,11 @@ The use of this approach in the **SML/NJ** system is described in an IFL paper.
 > *Proceedings of the 32nd Symposium on Implementation and Application of
 > Functional Languages (IFL '20)*, by Kavon Farvardin and John Reppy, September 2020.
 
+Originally, the JWA calling convention required use of the `naked` function attribute
+to disable the generation of function prologue and epilogue code.  We now make
+the omission of function prologue and  epilogue code part of the implementation of
+the JWA convention.
+
 ## Differences
 
 The main difference from the original **LLVM** source tree is that we modify the
@@ -125,33 +130,35 @@ calling convention on specific targets.  We currently have patches to support th
 X86 and Arm targets.
 
 There is some documentation about how to specify calling conventions in
-["Writing an LLVM Backend"](https://llvm.org/docs/WritingAnLLVMBackend.html)
+["Writing an LLVM Backend."](https://llvm.org/docs/WritingAnLLVMBackend.html)
 
-### Fixing `SelectionDAGBuilder.cpp`
+### Modified Files
 
-In Version 11.0.0 of *LLVM*, a change was made to `SelectionDAGISel::LowerArguments`
-in the `$LLVM/lib/CodeGen/SelectionDAG/SelectionDAGBuilder.cpp` file that
-breaks the handling of the `naked` attribute on functions with arguments
-(see commit [4dba59689d008df7be37733de4bb537b2911d3ad](https://github.com/llvm/llvm-project/commit/4dba59689d008df7be37733de4bb537b2911d3ad)).
-This change needs to be reverted to make things work, so we add the following `#ifdef`
-to disable the bogus code:
+The following is a list of the source files that we modify.  The details of
+the patches are described below.
 
-``` c++
-#ifdef BROKEN_NAKED_ATTRIBUTE
-  // In Naked functions we aren't going to save any registers.
-  if (F.hasFnAttribute(Attribute::Naked))
-    return;
-#endif
-```
-
-There is an open [issue (51741)](https://github.com/llvm/llvm-project/issues/51741)
-on this bug, but it does not seem to be high priority for a fix.
+* `$LLVM/include/llvm/IR/CallingConv.h`
+* `$LLVM/lib/CodeGen/PrologEpilogInserter.cpp`
+* `$LLVM/include/llvm/AsmParser/LLToken.h` (optional)
+* `$LLVM/lib/AsmParser/LLLexer.cpp` (optional)
+* `$LLVM/lib/AsmParser/LLParser.cpp` (optional)
+* `$LLVM/lib/IR/AsmWriter.cpp` (optional)
+* `$LLVM/lib/Target/X86/X86CallingConv.td`
+* `$LLVM/lib/Target/X86/X86FastISel.cpp`
+* `$LLVM/lib/Target/X86/X86ISelLoweringCall.cpp`
+* `$LLVM/lib/Target/X86/X86RegisterInfo.cpp`
+* `$LLVM/lib/Target/AArch64/AArch64CallingConvention.td`
+* `$LLVM/lib/Target/AArch64/AArch64CallingConvention.h`
+* `$LLVM/lib/Target/AArch64/AArch64FastISel.cpp`
+* `$LLVM/lib/Target/AArch64/AArch64RegisterInfo.cpp`
+* `$LLVM/lib/Target/AArch64/AArch64ISelLowering.cpp`
+* `$LLVM/lib/Target/AArch64/AArch64FrameLowering.cpp`
 
 ### `CallingConv.h`
 
 The file `$LLVM/include/llvm/IR/CallingConv.h` assigns integer codes for
-the various calling conventions.  In **LLVM** 16.0.x, the last number assigned
-is `20` (for the `SwiftTail` convention), so we use `21` for **JWA**.
+the various calling conventions.  In **LLVM** 19, the last number assigned
+is `21` (for the `PreserveNone` convention), so we use `22` for **JWA**.
 Add the following code to the file just before the first target-specific
 code (which will be `64`).
 
@@ -162,7 +169,21 @@ code (which will be `64`).
     /// if there are not enough registers for a given function. The lack of
     /// warning is needed in order to properly utilize musttail calls as
     /// jumps because they are picky about parameters.
-    JWA = 21,
+    JWA = 22,
+```
+
+### `PrologEpilogInserter.cpp`
+
+The file `$LLVM/lib/CodeGen/PrologEpilogInserter.cpp` contains a function for
+generating the function prologue and epilogue code, which is responsible for
+allocating and deallocating the stack frame.  Since we use a single shared
+frame for all functions, we disable this process.  We add the following code
+to the beginning of the function `PEI::insertPrologEpilogCode`:
+
+``` c++
+  // In the JWA calling convention, functions have no prologue/epilogue.
+  if (MF.getFunction().getCallingConv() == CallingConv::JWA)
+    return;
 ```
 
 ### Supporting `jwacc` in LLVM Assembler

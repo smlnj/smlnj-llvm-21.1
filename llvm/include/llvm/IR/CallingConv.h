@@ -89,6 +89,14 @@ namespace CallingConv {
     /// Used for runtime calls that preserves none general registers.
     PreserveNone = 21,
 
+    /// JWA - "Jump With Arguments" is a calling convention that requires the
+    /// use of registers for parameter passing. It is designed for language
+    /// implementations that do not use a stack, however, it will not warn
+    /// if there are not enough registers for a given function. The lack of
+    /// warning is needed in order to properly utilize musttail calls as
+    /// jumps because they are picky about parameters.
+    JWA = 22,
+
     /// This is the start of the target-specific calling conventions, e.g.
     /// fastcall and thiscall on X86.
     FirstTargetCC = 64,
