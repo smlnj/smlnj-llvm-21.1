@@ -1159,6 +1159,10 @@ void PEIImpl::calculateFrameObjectOffsets(MachineFunction &MF) {
 /// registers, insert spill code for these callee saved registers, then add
 /// prolog and epilog code to the function.
 void PEIImpl::insertPrologEpilogCode(MachineFunction &MF) {
+  // In the JWA calling convention, functions have no prologue/epilogue.
+  if (MF.getFunction().getCallingConv() == CallingConv::JWA)
+    return;
+
   const TargetFrameLowering &TFI = *MF.getSubtarget().getFrameLowering();
 
   // Add prologue to the function...

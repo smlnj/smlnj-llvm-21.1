@@ -195,8 +195,8 @@ pretty printer for LLVM assembly code.
 
 #### `LLTToken.h`
 
-Add `kw_jwacc` as a token in `$LLVM/include/llvm/AsmParser/LLToken.h` (I added it following
-`kw_swifttailcc`).
+Add `kw_jwacc` as a token in `$LLVM/include/llvm/AsmParser/LLToken.h`
+(I added it following `kw_ghccc`).
 
 #### `LLLexer.cpp`
 
@@ -206,7 +206,7 @@ Add the following keyword definition
   KEYWORD(jwacc);
 ```
 
-to the file `$LLVM/lib/AsmParser/LLLexer.cpp` (again, following `KEYWORD(swifttailcc);`).
+to the file `$LLVM/lib/AsmParser/LLLexer.cpp` (again, following `KEYWORD(ghccc);`).
 
 #### `LLParser.cpp`
 
@@ -224,7 +224,7 @@ and case
 
 to the function `LLParser::ParseOptionalCallingConv`
 in the file `$LLVM/lib/AsmParser/LLParser.cpp`.
-I add these following the `swifttailcc`, which is calling convention 20.
+I add these following the corresponding code for `ghccc`.
 
 #### `AsmWriter.cpp`
 
