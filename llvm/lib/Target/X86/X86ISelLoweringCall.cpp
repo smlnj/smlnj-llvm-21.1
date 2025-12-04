@@ -1278,7 +1278,8 @@ static SDValue CreateCopyOfByValArgument(SDValue Src, SDValue Dst,
 static bool canGuaranteeTCO(CallingConv::ID CC) {
   return (CC == CallingConv::Fast || CC == CallingConv::GHC ||
           CC == CallingConv::X86_RegCall || CC == CallingConv::HiPE ||
-          CC == CallingConv::Tail || CC == CallingConv::SwiftTail);
+          CC == CallingConv::Tail || CC == CallingConv::SwiftTail ||
+          CC == CallingConv::JWA);
 }
 
 /// Return true if we might ever do TCO for calls with this calling convention.
@@ -1716,7 +1717,7 @@ SDValue X86TargetLowering::LowerFormalArguments(
 
   assert(
       !(IsVarArg && canGuaranteeTCO(CallConv)) &&
-      "Var args not supported with calling conv' regcall, fastcc, ghc or hipe");
+      "Var args not supported with calling conv' regcall, fastcc, ghc, jwa, or hipe");
 
   // Assign locations to all of the incoming arguments.
   SmallVector<CCValAssign, 16> ArgLocs;
@@ -2114,7 +2115,7 @@ X86TargetLowering::LowerCall(TargetLowering::CallLoweringInfo &CLI,
                        "site marked musttail");
 
   assert(!(isVarArg && canGuaranteeTCO(CallConv)) &&
-         "Var args not supported with calling convention fastcc, ghc or hipe");
+         "Var args not supported with calling convention fastcc, ghc, jwa, or hipe");
 
   // Get a count of how many bytes are to be pushed on the stack.
   unsigned NumBytes = CCInfo.getAlignedCallFrameSize();

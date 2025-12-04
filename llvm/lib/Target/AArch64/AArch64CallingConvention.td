@@ -790,3 +790,47 @@ def CSR_AArch64_SVE_AAPCS_SCS
     : CalleeSavedRegs<(add CSR_AArch64_SVE_AAPCS, X18)>;
 def CSR_AArch64_AAPCS_SCS
     : CalleeSavedRegs<(add CSR_AArch64_AAPCS, X18)>;
+
+//===----------------------------------------------------------------------===//
+// JWA Calling Convention
+//===----------------------------------------------------------------------===//
+
+// The "Jump With Arguments" calling convention is designed to support the
+// "continuation-passing, closure-passing" model used by SML/NJ and the Manticore
+// compiler.  The convention is described in the paper "Compiling with Continuations
+// and LLVM" (https://arxiv.org/abs/1805.08842v1).
+//
+let Entry = 1 in
+def CC_AArch64_JWA : CallingConv<[
+  CCIfType<[iPTR], CCBitConvertToType<i64>>,
+  CCIfType<[i1, i8, i16, i32], CCPromoteToType<i64>>,
+  //
+  // SML/NJ argument order:
+  //	alloc, limit, store, exn, var, link, clos, cont,
+  //    misc0, ..., misc3, arg, misc4, .., misc17
+  CCIfType<[i64],
+    CCAssignToRegWithShadow<[
+	X24, X25, X26, X27, X28,	// ALLOC, LIMIT, STORE, EXN, VAR
+	X3, X2, X1,			// LINK, CLOS, CONT
+	X4, X5, X6,			// MISC0-MISC2 (aka, CS0-CS2)
+	X0, X7, X8, X9, X10, X11, X12,	// ARG, MISC3-MISC8
+	X13, X14, X15, X16, X19, X20,	// MISC9-MISC14
+	X21, X22, X23			// MISC15-MISC17
+      ],
+      [W24, W25, W26, W27, W28,	W3, W2, W1, W4, W5, W6,	W0, W7, W8, W9, W10, W11, W12,
+	W13, W14, W15, W16, W19, W20, W21, W22, W23]>>,
+  // there are 32 float/vector registers, but we only make 16 of them available
+  // for parameter passing
+  CCIfType<[f32], CCAssignToRegWithShadow<
+    [S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15],
+    [Q0, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10, Q11, Q12, Q13, Q14, Q15]>>,
+  CCIfType<[f64], CCAssignToRegWithShadow<
+    [D0, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14, D15],
+    [Q0, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10, Q11, Q12, Q13, Q14, Q15]>>
+]>;
+
+// use the same convention for returns
+let Entry = 1 in
+def RetCC_AArch64_JWA : CallingConv<[
+  CCDelegateTo<CC_AArch64_JWA>
+]>;

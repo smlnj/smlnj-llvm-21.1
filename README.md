@@ -325,7 +325,7 @@ The following line needs to be added to the definition of the
 "root argument convention for the X86-64 backend" (`CC_X86_64`):
 
 ```
-CCIfCC<"CallingConv::JWA", CCDelegateTo<CC_X86_64_JWA>>,
+  CCIfCC<"CallingConv::JWA", CCDelegateTo<CC_X86_64_JWA>>,
 ```
 
 #### `X86FastISel.cpp`
@@ -353,6 +353,17 @@ static bool canGuaranteeTCO(CallingConv::ID CC) {
           CC == CallingConv::Tail || CC == CallingConv::SwiftTail ||
           CC == CallingConv::JWA);
 }
+```
+
+There are a couple of assertions that check for incorrect use of the calling
+conventions that return `true` for `canGuaranteeTCO`.  The assertion messages
+for these can be modified to include mention of the JWA calling convention.
+For example, in the function `X86TargetLowering::LowerFormalArguments`, change the
+the assertion to
+``` c++
+  assert(
+      !(IsVarArg && canGuaranteeTCO(CallConv)) &&
+      "Var args not supported with calling conv' regcall, fastcc, ghc, jwa, or hipe");
 ```
 
 #### `X86RegisterInfo.cpp`

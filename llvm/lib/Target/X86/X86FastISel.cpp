@@ -3229,7 +3229,7 @@ static unsigned computeBytesPoppedByCalleeForSRet(const X86Subtarget *Subtarget,
     return 0;
   if (CC == CallingConv::Fast || CC == CallingConv::GHC ||
       CC == CallingConv::HiPE || CC == CallingConv::Tail ||
-      CC == CallingConv::SwiftTail)
+      CC == CallingConv::SwiftTail || CC == CallingConv::JWA)
     return 0;
 
   if (CB)

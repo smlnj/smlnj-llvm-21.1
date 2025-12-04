@@ -332,6 +332,8 @@ static unsigned getImplicitScaleFactor(MVT VT) {
 CCAssignFn *AArch64FastISel::CCAssignFnForCall(CallingConv::ID CC) const {
   if (CC == CallingConv::GHC)
     return CC_AArch64_GHC;
+  if (CC == CallingConv::JWA)
+    return CC_AArch64_JWA;
   if (CC == CallingConv::CFGuard_Check)
     return CC_AArch64_Win64_CFGuard_Check;
   if (Subtarget->isTargetDarwin())
@@ -3868,7 +3870,11 @@ bool AArch64FastISel::selectRet(const Instruction *I) {
     // Analyze operands of the call, assigning locations to each operand.
     SmallVector<CCValAssign, 16> ValLocs;
     CCState CCInfo(CC, F.isVarArg(), *FuncInfo.MF, ValLocs, I->getContext());
-    CCInfo.AnalyzeReturn(Outs, RetCC_AArch64_AAPCS);
+    if (CC == CallingConv::JWA) {
+        CCInfo.AnalyzeReturn(Outs, RetCC_AArch64_JWA);
+    } else {
+        CCInfo.AnalyzeReturn(Outs, RetCC_AArch64_AAPCS);
+    }
 
     // Only handle a single return value for now.
     if (ValLocs.size() != 1)

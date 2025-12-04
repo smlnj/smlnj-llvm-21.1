@@ -7658,6 +7658,8 @@ CCAssignFn *AArch64TargetLowering::CCAssignFnForCall(CallingConv::ID CC,
     reportFatalUsageError("unsupported calling convention");
   case CallingConv::GHC:
     return CC_AArch64_GHC;
+  case CallingConv::JWA:
+    return CC_AArch64_JWA;
   case CallingConv::PreserveNone:
     // The VarArg implementation makes assumptions about register
     // argument passing that do not hold for preserve_none, so we
@@ -7725,6 +7727,8 @@ AArch64TargetLowering::CCAssignFnForReturn(CallingConv::ID CC) const {
       return RetCC_AArch64_Arm64EC_CFGuard_Check;
     return RetCC_AArch64_AAPCS;
   }
+  case CallingConv::JWA:
+    return RetCC_AArch64_JWA;
 }
 
 static bool isPassedInFPR(EVT VT) {
@@ -8370,7 +8374,8 @@ SDValue AArch64TargetLowering::LowerCallResult(
 /// Return true if the calling convention is one that we can guarantee TCO for.
 static bool canGuaranteeTCO(CallingConv::ID CC, bool GuaranteeTailCalls) {
   return (CC == CallingConv::Fast && GuaranteeTailCalls) ||
-         CC == CallingConv::Tail || CC == CallingConv::SwiftTail;
+         CC == CallingConv::Tail || CC == CallingConv::SwiftTail ||
+         CC == CallingConv::JWA;
 }
 
 /// Return true if we might ever do TCO for calls with this calling convention.

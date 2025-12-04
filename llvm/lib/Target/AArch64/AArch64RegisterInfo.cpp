@@ -76,6 +76,9 @@ AArch64RegisterInfo::getCalleeSavedRegs(const MachineFunction *MF) const {
     // GHC set of callee saved regs is empty as all those regs are
     // used for passing STG regs around
     return CSR_AArch64_NoRegs_SaveList;
+  if (MF->getFunction().getCallingConv() == CallingConv::JWA)
+    // no callee-saves for JWA
+    return CSR_AArch64_NoRegs_SaveList;
   if (MF->getFunction().getCallingConv() == CallingConv::PreserveNone)
     return CSR_AArch64_NoneRegs_SaveList;
   if (MF->getFunction().getCallingConv() == CallingConv::AnyReg)
@@ -288,8 +291,8 @@ const uint32_t *
 AArch64RegisterInfo::getCallPreservedMask(const MachineFunction &MF,
                                           CallingConv::ID CC) const {
   bool SCS = MF.getFunction().hasFnAttribute(Attribute::ShadowCallStack);
-  if (CC == CallingConv::GHC)
-    // This is academic because all GHC calls are (supposed to be) tail calls
+  if ((CC == CallingConv::GHC) || (CC == CallingConv::JWA))
+    // This is academic because all GHC/JWA calls are (supposed to be) tail calls
     return SCS ? CSR_AArch64_NoRegs_SCS_RegMask : CSR_AArch64_NoRegs_RegMask;
   if (CC == CallingConv::PreserveNone)
     return SCS ? CSR_AArch64_NoneRegs_SCS_RegMask
@@ -396,6 +399,7 @@ AArch64RegisterInfo::getThisReturnPreservedMask(const MachineFunction &MF,
   // In case that the calling convention does not use the same register for
   // both, the function should return NULL (does not currently apply)
   assert(CC != CallingConv::GHC && "should not be GHC calling convention.");
+  assert(CC != CallingConv::JWA && "should not be JWA calling convention.");
   if (MF.getSubtarget<AArch64Subtarget>().isTargetDarwin())
     return CSR_Darwin_AArch64_AAPCS_ThisReturn_RegMask;
   return CSR_AArch64_AAPCS_ThisReturn_RegMask;
