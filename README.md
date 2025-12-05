@@ -30,6 +30,10 @@ components from the **LLVM** source tree:
 > `llvm/test`
 > `llvm/unittests`
 
+third-party/benchmark
+third-party/unittest
+third-party/update_benchmark.sh
+
 ## The Jump-with-Arguments Calling Convention
 
 The jump-with-arguments (JWA) calling convention is a [**LLVM**](https://llvm.org) calling
