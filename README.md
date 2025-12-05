@@ -22,7 +22,7 @@ distribution](https://github.com/llvm/llvm-project/releases/tag/llvmorg-21.1.7):
 ### Removed components
 
 To reduce the size of the repository, we have removed the following unused (by SML/NJ)
-components from the **LLVM** source tree:
+components from the **LLVM** source trees:
 
 * `llvm/benchmarks`
 * `llvm/bindings`
