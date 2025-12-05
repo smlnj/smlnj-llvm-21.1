@@ -1,4 +1,4 @@
-# LLVM with Support for JWA Calling Convention
+# LLVM 21.1 with Support for JWA Calling Convention
 
 This repository is a version of [**LLVM**](https://llvm.org) with support for the JWA
 calling convention.  It is meant to be used as a submodule for the development
