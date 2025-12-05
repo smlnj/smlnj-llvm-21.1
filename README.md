@@ -29,10 +29,9 @@ components from the **LLVM** source tree:
 > `llvm/examples`
 > `llvm/test`
 > `llvm/unittests`
-
-third-party/benchmark
-third-party/unittest
-third-party/update_benchmark.sh
+> `third-party/benchmark`
+> `third-party/unittest`
+> `third-party/update_benchmark.sh`
 
 ## The Jump-with-Arguments Calling Convention
 
