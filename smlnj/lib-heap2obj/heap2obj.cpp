@@ -70,7 +70,7 @@ Status emitHeapFile (
     }
     llvm::TargetOptions tgtOptions{};
     llvm::TargetMachine *tgtMachine = target->createTargetMachine(
-	llvmTripleStr,
+	llvmTriple,
 	"generic",		/* name of CPU variant */
 	"",			/* features string */
 	tgtOptions,
@@ -98,7 +98,7 @@ Status emitHeapFile (
     }
 
     // tell the module about the target machine
-    llvmModule.setTargetTriple(tgtMachine->getTargetTriple().getTriple());
+    llvmModule.setTargetTriple(tgtMachine->getTargetTriple());
     llvmModule.setDataLayout(tgtMachine->createDataLayout());
 
     // create the constants

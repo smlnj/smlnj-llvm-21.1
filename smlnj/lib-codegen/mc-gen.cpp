@@ -71,7 +71,7 @@ MCGen::MCGen (TargetInfo const *info)
 // see include/llvm/Support/*Parser.def for the various CPU and feature names
 // that are recognized
     std::unique_ptr<llvm::TargetMachine> tgtMachine(target->createTargetMachine(
-	triple.str(),
+	triple,
 	"generic",		/* CPU name */
 	"",			/* features string */
 	tgtOptions,
@@ -131,7 +131,7 @@ MCGen::~MCGen ()
 void MCGen::beginModule (llvm::Module *module)
 {
   // tell the module about the target machine
-    module->setTargetTriple(this->_tgtMachine->getTargetTriple().getTriple());
+    module->setTargetTriple(this->_tgtMachine->getTargetTriple());
     module->setDataLayout(this->_tgtMachine->createDataLayout());
 
 } // MCGen::beginModule
