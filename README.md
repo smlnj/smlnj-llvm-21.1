@@ -5,16 +5,30 @@ calling convention.  It is meant to be used as a submodule for the development
 branch of [**Standard ML of New Jersey** (**SML/NJ**)](https://smlnj.org) and is based on **LLVM**
 version 21.1.7.
 
-## Removed components
+## Components
+
+The [**LLVM** Project](https://llvm.org) has many components; for our purposes, we
+are only interested in the core libraries that support code generation.
+There are three directories in this repository that are from the [LLVM 21.1.7 source
+distribution](https://github.com/llvm/llvm-project/releases/tag/llvmorg-21.1.7):
+
+1. [`cmake`](https://github.com/llvm/llvm-project/releases/download/llvmorg-21.1.7/cmake-21.1.7.src.tar.xz)
+   -- shared CMake modules used by the **LLVM** project
+2. [`llvm`](https://github.com/llvm/llvm-project/releases/download/llvmorg-21.1.7/llvm-21.1.7.src.tar.xz)
+   -- the core code generation libraries
+3. [`third-party`](https://github.com/llvm/llvm-project/releases/download/llvmorg-21.1.7/third-party-21.1.7.src.tar.xz)
+   -- third-party dependencies used in various components of **LLVM**
+
+### Removed components
 
 To reduce the size of the repository, we have removed the following unused (by SML/NJ)
 components from the **LLVM** source tree:
 
-> `benchmarks`
-> `bindings`
-> `examples`
-> `test`
-> `unittests`
+> `llvm/benchmarks`
+> `llvm/bindings`
+> `llvm/examples`
+> `llvm/test`
+> `llvm/unittests`
 
 ## The Jump-with-Arguments Calling Convention
 
