@@ -5,7 +5,7 @@ calling convention.  It is meant to be used as a submodule for the development
 branch of [**Standard ML of New Jersey** (**SML/NJ**)](https://smlnj.org) and is based on **LLVM**
 version 21.1.7.
 
-## Components
+## LLVM Components
 
 The [**LLVM** Project](https://llvm.org) has many components; for our purposes, we
 are only interested in the core libraries that support code generation.
@@ -56,37 +56,41 @@ The important properties of the JWA runtime model are
 
 ## Organzation
 
-* `build-llvm.sh` -- shell script for configuring and building the LLVM tools
+* `build-llvm.sh` &mdash; shell script for configuring and building the LLVM tools
   and libraries.
 
-* `cfgc` -- source code for a tool that compiles the **SML/NJ** CFG IR pickles
+* `cfgc` &mdash; source code for a tool that compiles the **SML/NJ** CFG IR pickles
   to target code.  This tool is used to debug the **SML/NJ** backend; it is not
   part of the code generation pipeline.
 
-* `cfgc/LICENSE` -- the license for the code in the `cfgc` sub-directory.
+* `cfgc/LICENSE` &mdash; the license for the code in the `cfgc` sub-directory.
 
-* `cmake` -- **LLVM**'s common CMake modules; see `cmake/README.rst` for details.
+* `cmake` &mdash; **LLVM**'s common CMake modules; see `cmake/README.rst` for details.
 
-* `llvm` -- the main **LLVM** source directory.
+* `llvm` &mdash; the main **LLVM** source directory.
 
-* `llvm/CMakePresets.json` -- CMake presets that customize the configuration and
+* `llvm/CMakePresets.json` &mdash; CMake presets that customize the configuration and
   build process.  This file is **not** part of the standard LLVM sources.
 
-* `llvm/LICENSE.TXT` -- the **LLVM** source code license, which covers the code in the
+* `llvm/LICENSE.TXT` &mdash; the **LLVM** source code license, which covers the code in the
   `cmake` and `llvm` sub-directories.
 
-* `LLVM-VERSION` -- specifies the version of **LLVM** that this source tree is
-  derived from (which is 18.1.6).
+* `LLVM-VERSION` &mdash; specifies the version of **LLVM** that this source tree is
+  derived from (which is 21.1.7).
+
+* `third-party` &mdash; third-party dependencies used in various components of **LLVM**.
+  We only need the `siphash` header file from this tree, so the other components have
+  been removed.
 
 The `build-llvm.sh` script will produce several additional directories:
 
-* `bin` -- **LLVM** executables (*e.g.*, `llc`)
+* `bin` &mdash; **LLVM** executables (*e.g.*, `llc`)
 
-* `build` -- the directory used to compile the LLM tools and libraries
+* `build` &mdash; the directory used to compile the LLM tools and libraries
 
-* `include` -- **LLVM** include files
+* `include` &mdash; **LLVM** include files
 
-* `lib` -- **LLVM** libraries
+* `lib` &mdash; **LLVM** libraries
 
 ## History
 
@@ -140,7 +144,7 @@ these components.  We add the file `src/CMakePresets.json` and use CMake's
 
 **LLVM** needs to be modified to support the **JWA** calling convention
 that we use.  The modifications are fairly simple, and are
-described for **LLVM** 18.1.x below, where `$LLVM` denotes the root of
+described for **LLVM** 21.1.x below, where `$LLVM` denotes the root of
 the **LLVM** source tree.  The patch is organized into general changes to
 add JWA as a calling convention and target-specific changes to support the
 calling convention on specific targets.  We currently have patches to support the 64-bit
