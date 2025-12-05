@@ -13,11 +13,11 @@ There are three directories in this repository that are from the [LLVM 21.1.7 so
 distribution](https://github.com/llvm/llvm-project/releases/tag/llvmorg-21.1.7):
 
 1. [`cmake`](https://github.com/llvm/llvm-project/releases/download/llvmorg-21.1.7/cmake-21.1.7.src.tar.xz)
-   -- shared CMake modules used by the **LLVM** project
+   &mdash; shared CMake modules used by the **LLVM** project
 2. [`llvm`](https://github.com/llvm/llvm-project/releases/download/llvmorg-21.1.7/llvm-21.1.7.src.tar.xz)
-   -- the core code generation libraries
+   &mdash; the core code generation libraries
 3. [`third-party`](https://github.com/llvm/llvm-project/releases/download/llvmorg-21.1.7/third-party-21.1.7.src.tar.xz)
-   -- third-party dependencies used in various components of **LLVM**
+   &mdash; third-party dependencies used in various components of **LLVM**
 
 ### Removed components
 
