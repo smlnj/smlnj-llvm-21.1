@@ -24,14 +24,14 @@ distribution](https://github.com/llvm/llvm-project/releases/tag/llvmorg-21.1.7):
 To reduce the size of the repository, we have removed the following unused (by SML/NJ)
 components from the **LLVM** source tree:
 
-> `llvm/benchmarks`
-> `llvm/bindings`
-> `llvm/examples`
-> `llvm/test`
-> `llvm/unittests`
-> `third-party/benchmark`
-> `third-party/unittest`
-> `third-party/update_benchmark.sh`
+* `llvm/benchmarks`
+* `llvm/bindings`
+* `llvm/examples`
+* `llvm/test`
+* `llvm/unittests`
+* `third-party/benchmark`
+* `third-party/unittest`
+* `third-party/update_benchmark.sh`
 
 ## The Jump-with-Arguments Calling Convention
 
