@@ -7726,9 +7726,9 @@ AArch64TargetLowering::CCAssignFnForReturn(CallingConv::ID CC) const {
     if (Subtarget->isWindowsArm64EC())
       return RetCC_AArch64_Arm64EC_CFGuard_Check;
     return RetCC_AArch64_AAPCS;
-  }
   case CallingConv::JWA:
     return RetCC_AArch64_JWA;
+  }
 }
 
 static bool isPassedInFPR(EVT VT) {
