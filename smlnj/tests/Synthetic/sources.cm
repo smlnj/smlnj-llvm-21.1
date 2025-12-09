@@ -16,6 +16,9 @@ Library
   structure Ex4		(* Int64 factorial *)
   structure Ex5		(* try wrapper *)
   structure Ex6		(* switch *)
+(* ex07.sml is broken
+  structure Ex7		(* recursive tree walk *)
+*)
   structure Ex8		(* example for paper *)
   structure Ex9		(* test fneg and fabs *)
 (*
@@ -38,6 +41,9 @@ is
   ex04.sml
   ex05.sml
   ex06.sml
+(* ex07.sml is broken
+  ex07.sml
+*)
   ex08.sml
   ex09.sml
 (*

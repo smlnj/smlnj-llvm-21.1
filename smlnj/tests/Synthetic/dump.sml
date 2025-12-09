@@ -24,6 +24,9 @@ structure Dump : sig
 	    ("ex04.pkl", Ex4.cu),
 	    ("ex05.pkl", Ex5.cu),
 	    ("ex06.pkl", Ex6.cu),
+(* ex07.sml is broken
+	    ("ex07.pkl", Ex7.cu),
+*)
 	    ("ex08.pkl", Ex8.cu),
 	    ("ex09.pkl", Ex9.cu)(*,
 	    ("ex10.pkl", Ex10.cu),
