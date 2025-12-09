@@ -1,0 +1,35 @@
+(* cfg.cm
+ *
+ * COPYRIGHT (c) 2025 The Fellowship of SML/NJ (https://smlnj.org)
+ * All rights reserved.
+ *)
+
+Library
+
+  signature CFGPICKLE
+  signature CFG__PRIM_PICKLE
+  signature CTYPES_PICKLE
+
+  structure CFG
+  structure CFGFilePickle
+  structure CFG_Prim
+  structure CFG_PrimFilePickle
+  structure CTypes
+  structure CTypesFilePickle
+  structure LambdaVar
+  structure LambdaVarFilePickle
+
+is
+
+  $/basis.cm
+  $/smlnj-lib.cm
+  $/asdl-lib.cm
+
+  cfg-file-pickle.sml
+  lambda-var-pickle.sml
+  cfg-pickle.sig
+  cfg.sml
+
+  (* extra files added by hand *)
+  c-types.sml
+  lambda-var.sml

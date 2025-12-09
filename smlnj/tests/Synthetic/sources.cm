@@ -1,0 +1,49 @@
+(* sources.cm
+ *
+ * COPYRIGHT (c) 2020 The Fellowship of SML/NJ (http://www.smlnj.org)
+ * All rights reserved.
+ *)
+
+Library
+
+  structure CFG
+  structure Dump
+
+  structure Ex0		(* id function w/o linking code *)
+  structure Ex1		(* id function *)
+  structure Ex2		(* list rev *)
+  structure Ex3		(* floating-point madd *)
+  structure Ex4		(* Int64 factorial *)
+  structure Ex5		(* try wrapper *)
+  structure Ex6		(* switch *)
+  structure Ex8		(* example for paper *)
+  structure Ex9		(* test fneg and fabs *)
+(*
+  structure Ex10	(* test bit operations on 64-bit integers *)
+  structure Ex11	(* test trapping 32-bit arithmetic *)
+*)
+
+is
+
+  $/basis.cm
+  $/asdl-lib.cm
+
+  cfg.cm
+
+  (* examples *)
+  ex00.sml
+  ex01.sml
+  ex02.sml
+  ex03.sml
+  ex04.sml
+  ex05.sml
+  ex06.sml
+  ex08.sml
+  ex09.sml
+(*
+  ex10.sml
+  ex11.sml
+*)
+
+  dump.sml
+  obj-desc.sml
