@@ -21,8 +21,8 @@ Library
 *)
   structure Ex8		(* example for paper *)
   structure Ex9		(* test fneg and fabs *)
-(*
   structure Ex10	(* test bit operations on 64-bit integers *)
+(*
   structure Ex11	(* test trapping 32-bit arithmetic *)
 *)
 
@@ -46,8 +46,8 @@ is
 *)
   ex08.sml
   ex09.sml
-(*
   ex10.sml
+(*
   ex11.sml
 *)
 

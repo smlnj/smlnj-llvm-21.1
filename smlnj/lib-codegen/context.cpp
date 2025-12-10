@@ -558,7 +558,7 @@ llvm::Value *Context::_loadMemReg (CMRegId r)
 void Context::_storeMemReg (CMRegId r, llvm::Value *v)
 {
     auto info = this->_regInfo.info(r);
-    auto stkAddr = this->stkAddr (v->getType()->getPointerTo(), info->offset());
+    auto stkAddr = this->stkAddr (llvm::PointerType::get(*this, 0), info->offset());
     this->_builder.CreateAlignedStore (
 	v,
 	stkAddr,
@@ -610,7 +610,7 @@ void Context::callGC (
   // that contains the post-GC values of the argument registers
     auto call = this->_builder.CreateCall (
 	this->_gcFnTy,
-	this->createBitCast(callGCFn, this->_gcFnTy->getPointerTo()),
+	this->createBitCast(callGCFn, llvm::PointerType::get(*this, 0)),
 	roots);
     call->setCallingConv (llvm::CallingConv::JWA);
     call->setTailCallKind (llvm::CallInst::TCK_NoTail);
@@ -669,7 +669,7 @@ llvm::Value *Context::castTy (llvm::Type *srcTy, llvm::Type *tgtTy, llvm::Value 
 
 llvm::Function *Context::_getIntrinsic (llvm::Intrinsic::ID id, llvm::Type *ty) const
 {
-    return llvm::Intrinsic::getDeclaration (
+    return llvm::Intrinsic::getOrInsertDeclaration (
 	this->_module, id, llvm::ArrayRef<llvm::Type *>(ty));
 }
 

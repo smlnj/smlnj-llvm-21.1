@@ -242,17 +242,23 @@ namespace CFG_Prim {
             case pureop::ANDB:
                 return cxt->createAnd(cxt->asInt(sz, args[0]), cxt->asInt(sz, args[1]));
             case pureop::CNTPOP:
-                 return cxt->build().CreateCall(
+                return cxt->build().CreateCall(
                     (this->get_sz() == 32) ? cxt->ctpop32() : cxt->ctpop64(),
                     args);
-            case pureop::CNTLZ:
-                 return cxt->build().CreateCall(
+            case pureop::CNTLZ: {
+                // we add `false` as an argument to get a result for zero
+                llvm::Value *xargs[2] = { args[0], cxt->build().getFalse() };
+                return cxt->build().CreateCall(
                     (this->get_sz() == 32) ? cxt->ctlz32() : cxt->ctlz64(),
-                    args);
-            case pureop::CNTTZ:
-                 return cxt->build().CreateCall(
+                    xargs);
+            }
+            case pureop::CNTTZ: {
+                // we add `false` as an argument to get a result for zero
+                llvm::Value *xargs[2] = { args[0], cxt->build().getFalse() };
+                return cxt->build().CreateCall(
                     (this->get_sz() == 32) ? cxt->cttz32() : cxt->cttz64(),
-                    args);
+                    xargs);
+            }
             case pureop::ROTL:
             case pureop::ROTR:
                 assert (false && "rotations unimplemented");
