@@ -49,8 +49,14 @@
 # project files
 bin
 build
+smlnj/tests/*.cfg
 smlnj/tests/*.s
 smlnj/tests/*.ll
 smlnj/tests/*.o
+smlnj/tests/Synthetic/.cm
+smlnj/tests/Synthetic/*.cfg
+smlnj/tests/Synthetic/*.s
+smlnj/tests/Synthetic/*.ll
+smlnj/tests/Synthetic/*.o
 /include
 /lib
