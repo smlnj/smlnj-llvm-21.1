@@ -259,9 +259,18 @@ namespace CFG_Prim {
                     (this->get_sz() == 32) ? cxt->cttz32() : cxt->cttz64(),
                     xargs);
             }
-            case pureop::ROTL:
-            case pureop::ROTR:
-                assert (false && "rotations unimplemented");
+            case pureop::ROTL: {
+                llvm::Value *xargs[3] = { args[0], args[0], args[1] };
+                return cxt->build().CreateCall(
+                    (this->get_sz() == 32) ? cxt->fshl32() : cxt->fshl64(),
+                    xargs);
+            }
+            case pureop::ROTR: {
+                llvm::Value *xargs[3] = { args[0], args[0], args[1] };
+                return cxt->build().CreateCall(
+                    (this->get_sz() == 32) ? cxt->fshr32() : cxt->fshr64(),
+                    xargs);
+            }
             case pureop::FADD:
                 return cxt->createFAdd(args[0], args[1]);
             case pureop::FSUB:
