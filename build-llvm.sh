@@ -194,9 +194,9 @@ echo "build-llvm.sh: mkdir build"
 mkdir build
 cd build
 
-if [ x"$GENERATOR" = make ] ; then
+if [ x"$GENERATOR" = xmake ] ; then
   CMAKE_GENERATOR="Unix Makefiles"
-elif [ x"$GENERATOR" = ninja ] ; then
+elif [ x"$GENERATOR" = xninja ] ; then
   CMAKE_GENERATOR="Ninja"
 else
   # default
