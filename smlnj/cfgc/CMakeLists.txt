@@ -15,9 +15,6 @@ add_dependencies(cfgc CFGCodeGen)
 
 target_compile_options(cfgc PRIVATE -fno-exceptions -fno-rtti)
 #target_compile_definitions(cfgc PRIVATE ${OPSYS} ${ARCH})
-target_include_directories(cfgc PRIVATE
-  ${SMLNJ_LLVM_BINARY_DIR}/smlnj/include
-  ${SMLNJ_LLVM_BINARY_DIR}/llvm/include ${SMLNJ_LLVM_SOURCE_DIR}/llvm/include)
 target_link_libraries(cfgc CFGCodeGen ${LLVM_LIBS})
 
 install(TARGETS cfgc)

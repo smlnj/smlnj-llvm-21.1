@@ -20,10 +20,6 @@ add_executable(heap2obj ${SRCS})
 add_dependencies(heap2obj Heap2Obj)
 
 target_compile_options(heap2obj PRIVATE -fno-exceptions -fno-rtti)
-target_include_directories(heap2obj PRIVATE
-  ${SMLNJ_LLVM_SOURCE_DIR}/smlnj/include
-  ${SMLNJ_LLVM_BINARY_DIR}/llvm/include
-  ${SMLNJ_LLVM_SOURCE_DIR}/llvm/include)
 target_link_libraries(heap2obj Heap2Obj ${LLVM_LIBS})
 
 install(TARGETS heap2obj)

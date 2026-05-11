@@ -14,6 +14,9 @@ project(smlnj-llvm
   HOMEPAGE_URL https://smlnj.org
   LANGUAGES C CXX)
 
+# LLVM cache variable settings
+include(cmake/llvm_settings.cmake)
+
 # more checks for when we are building the LLVM stuff as a standalone project
 #
 if (PROJECT_IS_TOP_LEVEL)
@@ -36,11 +39,6 @@ if (PROJECT_IS_TOP_LEVEL)
   #
   set(CMAKE_CXX_STANDARD 17 CACHE STRING "C++ standard to conform to")
   set(CMAKE_CXX_STANDARD_REQUIRED YES)
-
-  # root binary and source directories for the SML/NJ LLVM Library
-  #
-  set (SMLNJ_LLVM_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-  set (SMLNJ_LLVM_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
 
 endif(PROJECT_IS_TOP_LEVEL)
 
@@ -65,5 +63,8 @@ message(VERBOSE "** LLVM CONFIGURATION DONE **")
 
 # The CFG Code Generation Library
 #
-include_directories(include)
+include_directories(
+  include
+  llvm/include
+  ${CMAKE_CURRENT_BINARY_DIR}/llvm/include)
 add_subdirectory(smlnj)
