@@ -58,11 +58,6 @@ namespace CFG_Prim {
 
         assert (len == this->_v_fields.size() && "incorrect number of fields");
 
-/* FIXME: for 32-bit targets, we may need to align the allocation pointer; to do
- * this properly, we ought to track the current alignment of the allocation pointer
- * w.r.t. the current fragment.
- */
-
         // write the object descriptor
         cxt->createStoreInt (cxt->uConst(this->_v_desc.toUInt64()),allocPtr);
 
@@ -94,7 +89,10 @@ namespace CFG_Prim {
                 cxt->createStoreML (args[i], adr);
             }
             else {
-                assert (args[i]->getType() == elemTy && "type mismatch");
+/* FIXME: because CPS does not track the field types of a RK_RAWBLOCK record,
+ * the CPS-to-CFG conversion cannot reliably compute `elemTy`
+ */
+//                assert (args[i]->getType() == elemTy && "type mismatch");
                 cxt->createStore (args[i], adr, szb);
             }
             offset += szb;

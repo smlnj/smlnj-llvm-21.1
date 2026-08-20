@@ -587,6 +587,7 @@ void Context::_storeMemReg (CMRegId r, llvm::Value *v)
 
 // utility function for allocating a record of ML values (pointers or
 // tagged ints).
+// NOTE: we also use this function for mixed records
 //
 llvm::Value *Context::allocRecord (llvm::Value *desc, Args_t const & args)
 {
@@ -601,7 +602,7 @@ llvm::Value *Context::allocRecord (llvm::Value *desc, Args_t const & args)
   // initialize the object's fields
     for (int i = 1;  i <= len;  ++i) {
 	this->build().CreateAlignedStore (
-	    this->asMLValue (args[i-1]),
+	    args[i-1],
 	    this->createGEP (allocPtr, i),
 	    llvm::MaybeAlign (this->_wordSzB));
     }
