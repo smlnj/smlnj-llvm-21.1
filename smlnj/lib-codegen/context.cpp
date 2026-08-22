@@ -113,22 +113,18 @@ Context::Context (TargetInfo const *target)
     }
 
     // initialize the cached intrinsic functions
-    this->_sadd32WO.init(llvm::Intrinsic::sadd_with_overflow, this->i32Ty);
-    this->_ssub32WO.init(llvm::Intrinsic::ssub_with_overflow, this->i32Ty);
-    this->_smul32WO.init(llvm::Intrinsic::smul_with_overflow, this->i32Ty);
-    this->_sadd64WO.init(llvm::Intrinsic::sadd_with_overflow, this->i64Ty);
-    this->_ssub64WO.init(llvm::Intrinsic::ssub_with_overflow, this->i64Ty);
-    this->_smul64WO.init(llvm::Intrinsic::smul_with_overflow, this->i64Ty);
-    this->_ctlz32.init(llvm::Intrinsic::ctlz, this->i32Ty);
-    this->_ctpop32.init(llvm::Intrinsic::ctpop, this->i32Ty);
-    this->_cttz32.init(llvm::Intrinsic::cttz, this->i32Ty);
-    this->_ctlz64.init(llvm::Intrinsic::ctlz, this->i64Ty);
-    this->_ctpop64.init(llvm::Intrinsic::ctpop, this->i64Ty);
-    this->_cttz64.init(llvm::Intrinsic::cttz, this->i64Ty);
-    this->_fshl32.init(llvm::Intrinsic::fshl, this->i32Ty);
-    this->_fshr32.init(llvm::Intrinsic::fshr, this->i32Ty);
-    this->_fshl64.init(llvm::Intrinsic::fshl, this->i64Ty);
-    this->_fshr64.init(llvm::Intrinsic::fshr, this->i64Ty);
+    llvm::Type *tys[4] = { this->i64Ty, this->i32Ty, this->i16Ty, this->i8Ty };
+    for (int i = 0;  i < 4;  ++i) {
+        this->_saddWO[i].init(llvm::Intrinsic::sadd_with_overflow, tys[i]);
+        this->_ssubWO[i].init(llvm::Intrinsic::ssub_with_overflow, tys[i]);
+        this->_smulWO[i].init(llvm::Intrinsic::smul_with_overflow, tys[i]);
+        this->_ctlz[i].init(llvm::Intrinsic::ctlz, tys[i]);
+        this->_ctpop[i].init(llvm::Intrinsic::ctpop, tys[i]);
+        this->_cttz[i].init(llvm::Intrinsic::cttz, tys[i]);
+        this->_fshl[i].init(llvm::Intrinsic::fshl, tys[i]);
+        this->_fshr[i].init(llvm::Intrinsic::fshr, tys[i]);
+    }
+
     this->_fma32.init(llvm::Intrinsic::fma, this->f32Ty);
     this->_fabs32.init(llvm::Intrinsic::fabs, this->f32Ty);
     this->_sqrt32.init(llvm::Intrinsic::sqrt, this->f32Ty);
@@ -157,22 +153,17 @@ void Context::beginModule (std::string_view src, int nClusters)
     this->_clusterMap.reserve(nClusters);
 
     // reset the cached intrinsic functions
-    this->_sadd32WO.reset();
-    this->_ssub32WO.reset();
-    this->_smul32WO.reset();
-    this->_sadd64WO.reset();
-    this->_ssub64WO.reset();
-    this->_smul64WO.reset();
-    this->_ctlz32.reset();
-    this->_ctpop32.reset();
-    this->_cttz32.reset();
-    this->_ctlz64.reset();
-    this->_ctpop64.reset();
-    this->_cttz64.reset();
-    this->_fshl32.reset();
-    this->_fshr32.reset();
-    this->_fshl64.reset();
-    this->_fshr64.reset();
+    for (int i = 0;  i < 4;  ++i) {
+        this->_saddWO[i].reset();
+        this->_ssubWO[i].reset();
+        this->_smulWO[i].reset();
+        this->_ctlz[i].reset();
+        this->_ctpop[i].reset();
+        this->_cttz[i].reset();
+        this->_fshl[i].reset();
+        this->_fshr[i].reset();
+    }
+
     this->_fma32.reset();
     this->_fabs32.reset();
     this->_sqrt32.reset();

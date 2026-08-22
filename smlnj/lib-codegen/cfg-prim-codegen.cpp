@@ -162,26 +162,20 @@ namespace CFG_Prim {
 
         switch (this->get_oper()) {
             case arithop::IADD:
-                pair = cxt->build().CreateCall(
-                    (this->get_sz() == 32) ? cxt->sadd32WOvflw() : cxt->sadd64WOvflw(),
-                    args);
+                pair = cxt->build().CreateCall(cxt->saddWOvflw(sz), args);
                 break;
 
             case arithop::ISUB:
-                pair = cxt->build().CreateCall(
-                    (this->get_sz() == 32) ? cxt->ssub32WOvflw() : cxt->ssub64WOvflw(),
-                    args);
+                pair = cxt->build().CreateCall(cxt->ssubWOvflw(sz), args);
                 break;
 
             case arithop::IMUL:
-                pair = cxt->build().CreateCall(
-                    (this->get_sz() == 32) ? cxt->smul32WOvflw() : cxt->smul64WOvflw(),
-                    args);
+                pair = cxt->build().CreateCall(cxt->smulWOvflw(sz), args);
                 break;
 
             case arithop::IDIV:
               // can trap on `minInt / ~1`, but the x86-64 hardware generates that trap,
-              // so we do not need to do anything special.  May want to add explicit
+              // so we do not need to do anything special.  May want to add an explicit
               // test in the future.
                 return cxt->createSDiv (args[0], args[1]);
 
@@ -240,34 +234,24 @@ namespace CFG_Prim {
             case pureop::ANDB:
                 return cxt->createAnd(cxt->asInt(sz, args[0]), cxt->asInt(sz, args[1]));
             case pureop::CNTPOP:
-                return cxt->build().CreateCall(
-                    (this->get_sz() == 32) ? cxt->ctpop32() : cxt->ctpop64(),
-                    args);
+                return cxt->build().CreateCall(cxt->ctpop(sz), args);
             case pureop::CNTLZ: {
                 // we add `false` as an argument to get a result for zero
                 llvm::Value *xargs[2] = { args[0], cxt->build().getFalse() };
-                return cxt->build().CreateCall(
-                    (this->get_sz() == 32) ? cxt->ctlz32() : cxt->ctlz64(),
-                    xargs);
+                return cxt->build().CreateCall(cxt->ctlz(sz), xargs);
             }
             case pureop::CNTTZ: {
                 // we add `false` as an argument to get a result for zero
                 llvm::Value *xargs[2] = { args[0], cxt->build().getFalse() };
-                return cxt->build().CreateCall(
-                    (this->get_sz() == 32) ? cxt->cttz32() : cxt->cttz64(),
-                    xargs);
+                return cxt->build().CreateCall(cxt->cttz(sz), xargs);
             }
             case pureop::ROTL: {
                 llvm::Value *xargs[3] = { args[0], args[0], args[1] };
-                return cxt->build().CreateCall(
-                    (this->get_sz() == 32) ? cxt->fshl32() : cxt->fshl64(),
-                    xargs);
+                return cxt->build().CreateCall(cxt->fshl(sz), xargs);
             }
             case pureop::ROTR: {
                 llvm::Value *xargs[3] = { args[0], args[0], args[1] };
-                return cxt->build().CreateCall(
-                    (this->get_sz() == 32) ? cxt->fshr32() : cxt->fshr64(),
-                    xargs);
+                return cxt->build().CreateCall(cxt->fshr(sz), xargs);
             }
             case pureop::FADD:
                 return cxt->createFAdd(args[0], args[1]);
@@ -357,7 +341,7 @@ namespace CFG_Prim {
     {
         llvm::Type *elemTy = numType (cxt, this->_v_kind, this->_v_sz);
 
-        llvm::Value *adr = cxt->createGEP (elemTy, args[0], args[1]);
+        llvm::Value *adr = cxt->createGEP (elemTy, args[0], cxt->asInt(args[1]));
 
         return cxt->createLoad (elemTy, adr, bitsToBytes(this->_v_sz));
 
@@ -400,7 +384,7 @@ namespace CFG_Prim {
         llvm::Type *elemTy = numType (cxt, this->_v_kind, this->_v_sz);
 
       // RAW_LOAD assumes byte addressing, so we compute the address as a `char *`
-        llvm::Value *adr = cxt->createGEP (cxt->i8Ty, args[0], args[1]);
+        llvm::Value *adr = cxt->createGEP (cxt->i8Ty, args[0], cxt->asInt(args[1]));
 
 // QUESTION: should we mark the load as volatile?
         return cxt->createLoad (elemTy, adr, bitsToBytes(this->_v_sz));
@@ -411,7 +395,7 @@ namespace CFG_Prim {
     {
         llvm::Type *elemTy = numType (cxt, this->_v_kind, this->_v_sz);
 
-        llvm::Value *adr = cxt->createGEP (elemTy, args[0], args[1]);
+        llvm::Value *adr = cxt->createGEP (elemTy, args[0], cxt->asInt(args[1]));
 
 // QUESTION: should we mark the load as volatile?
         return cxt->createLoad (elemTy, adr, bitsToBytes(this->_v_sz));
@@ -452,13 +436,13 @@ namespace CFG_Prim {
 
     void UNBOXED_UPDATE::codegen (smlnj::cfgcg::Context *cxt, Args_t const &args)
     {
-        cxt->createStoreML (args[2], cxt->createGEP (cxt->mlValueTy, args[0], args[1]));
+        cxt->createStoreML (args[2], cxt->createGEP (cxt->mlValueTy, args[0], cxt->asInt(args[1])));
 
     } // UNBOXED_UPDATE::codegen
 
     void UPDATE::codegen (smlnj::cfgcg::Context *cxt, Args_t const &args)
     {
-        llvm::Value *adr = cxt->createGEP (cxt->mlValueTy, args[0], args[1]);
+        llvm::Value *adr = cxt->createGEP (cxt->mlValueTy, args[0], cxt->asInt(args[1]));
 
         recordStore (cxt, adr);
 
@@ -487,7 +471,7 @@ namespace CFG_Prim {
     {
         llvm::Type *elemTy = numType (cxt, this->_v_kind, this->_v_sz);
 
-        llvm::Value *adr = cxt->createGEP (elemTy, args[0], args[1]);
+        llvm::Value *adr = cxt->createGEP (elemTy, args[0], cxt->asInt(args[1]));
 
         if (args[2]->getType() == cxt->mlValueTy) {
             assert (elemTy == cxt->intTy && "expected native integer field");
@@ -505,7 +489,7 @@ namespace CFG_Prim {
 
       // RAW_STORE assumes byte addressing, so we compute the address as a `char *`
       // and then bitcast to the desired pointer type for the store
-        llvm::Value *adr = cxt->createGEP (cxt->i8Ty, args[0], args[1]);
+        llvm::Value *adr = cxt->createGEP (cxt->i8Ty, args[0], cxt->asInt(args[1]));
 
         return cxt->createStore (args[2], adr, bitsToBytes(this->_v_sz));
 
