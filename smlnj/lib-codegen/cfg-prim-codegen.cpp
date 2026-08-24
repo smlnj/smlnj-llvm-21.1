@@ -311,7 +311,18 @@ namespace CFG_Prim {
 
     llvm::Value *TRUNC::codegen (smlnj::cfgcg::Context *cxt, Args_t const &args)
     {
-        return cxt->createTrunc (args[0], cxt->iType(this->_v_to));
+        llvm::Value *src = args[0];
+        llvm::Type *srcTy = cxt->iType(this->_v_from);
+
+      // SELECT loads an ordinary record field as an ML value.  When the field
+      // logically contains a machine-width integer, recover its integer type
+      // before narrowing it.
+        if (src->getType()->isPointerTy()) {
+            src = cxt->asInt(src);
+        }
+        assert (src->getType() == srcTy && "incorrect source type for truncation");
+
+        return cxt->createTrunc (src, cxt->iType(this->_v_to));
 
     } // TRUNC::codegen
 
