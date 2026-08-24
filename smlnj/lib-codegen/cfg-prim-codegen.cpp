@@ -101,7 +101,9 @@ namespace CFG_Prim {
         offset = (offset + (cxt->wordSzInBytes() - 1)) & ~(cxt->wordSzInBytes() - 1);
 
       // bump the allocation pointer
-        cxt->setMLReg (smlnj::cfgcg::CMRegId::ALLOC_PTR, cxt->createGEP (obj, offset));
+        cxt->setMLReg (
+            smlnj::cfgcg::CMRegId::ALLOC_PTR,
+            cxt->createGEP (cxt->i8Ty, obj, offset));
 
         return obj;
 
@@ -308,7 +310,7 @@ namespace CFG_Prim {
 
     llvm::Value *TRUNC::codegen (smlnj::cfgcg::Context *cxt, Args_t const &args)
     {
-        return cxt->createTrunc (args[0], cxt->iType(this->_v_to));
+        return cxt->createTrunc (cxt->asInt(args[0]), cxt->iType(this->_v_to));
 
     } // TRUNC::codegen
 
@@ -326,7 +328,7 @@ namespace CFG_Prim {
 
     llvm::Value *BITS_TO_FLOAT::codegen (smlnj::cfgcg::Context *cxt, Args_t const &args)
     {
-        return cxt->createBitCast (args[0], cxt->fType(this->_v_sz));
+        return cxt->createBitCast (cxt->asInt(args[0]), cxt->fType(this->_v_sz));
 
     } // BITS_TO_FLOAT::codegen
 
