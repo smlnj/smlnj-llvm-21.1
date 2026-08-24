@@ -101,7 +101,10 @@ namespace CFG_Prim {
         offset = (offset + (cxt->wordSzInBytes() - 1)) & ~(cxt->wordSzInBytes() - 1);
 
       // bump the allocation pointer
-        cxt->setMLReg (smlnj::cfgcg::CMRegId::ALLOC_PTR, cxt->createGEP (obj, offset));
+        cxt->setMLReg (
+            smlnj::cfgcg::CMRegId::ALLOC_PTR,
+            cxt->createGEP (cxt->i8Ty, obj, offset) /* offset counts bytes */
+        );
 
         return obj;
 
