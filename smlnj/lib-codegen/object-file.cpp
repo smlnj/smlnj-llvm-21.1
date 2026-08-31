@@ -200,7 +200,7 @@ llvm::dbgs() << "# reserve: codeSzb = " << codeSzb << "@" << codeAlign.value()
     auto totalSize = this->size() + this->_baseAlign - 1;
 
     /// allocate the memory for the in-memory sections
-    this->_mem = new uint8_t [totalSize];
+    this->_mem = new uint8_t [totalSize]();
     this->_base =
         reinterpret_cast<uint8_t *>(
             alignBy(reinterpret_cast<uintptr_t>(this->_mem), this->_baseAlign));
