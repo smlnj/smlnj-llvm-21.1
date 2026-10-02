@@ -158,6 +158,17 @@ llvm::dbgs() << "# [" << this->_name << "] alloc: new size = " << this->_szb
 #endif
             return ptr;
         }
+
+        /// zero the memory region occupied by the padding, which won't be
+        /// written into by the code generator.  This is necessary to ensure
+        /// deterministic builds
+        void clear ()
+        {
+            assert (this->_data != nullptr && "no memory allocated for section");
+            if (this->_szb < this->_paddedSzb) {
+                ::memset (this->_data + this->_szb, 0, this->_paddedSzb - this->_szb);
+            }
+        }
     };
 
     uint8_t *_mem;              ///< pointer to allocated memory
@@ -217,7 +228,7 @@ llvm::dbgs() << "# reserve: mem = " << this->_mem
 #endif
 /*DEBUG*/
 
-    /// assign base addresses for the sections
+    // assign base addresses for the sections
     this->_code._data = this->_base;
     this->_roData._data = this->_code.top();
     this->_rwData._data = this->_roData.top();
@@ -229,6 +240,12 @@ llvm::dbgs() << "# reserve: code = [" << this->_code._data << ".." << this->_cod
 << "]\n";
 #endif
 /*DEBUG*/
+
+   // clear the pad regions of the memory, which won't be written into by the
+   // code generator.  This is necessary to ensure deterministic builds
+    this->_code.clear();
+    this->_roData.clear();
+    this->_rwData.clear();
 
 } // MemManager::reserveAllocationSpace
 
