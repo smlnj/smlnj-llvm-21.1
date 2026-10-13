@@ -20,6 +20,8 @@ namespace CTypes {
         static c_type * read (asdl::instream & is);
         virtual llvm::Type *toLLVM (smlnj::cfgcg::Context *cxt) = 0;
         bool isVoid () const { return this->_tag == _con_C_void; }
+
+
       protected:
         enum _tag_t {
             _con_C_void = 1,
@@ -275,6 +277,7 @@ namespace CTypes {
             this->_v_paramTys = v;
         }
         llvm::FunctionType *toLLVM (smlnj::cfgcg::Context *cxt);
+
       private:
         calling_convention _v_conv;
         c_type * _v_retTy;
@@ -536,8 +539,7 @@ namespace CFG_Prim {
     class FLOAT_TO_INT : public arith {
       public:
         FLOAT_TO_INT (rounding_mode p_mode, int p_from, int p_to)
-          : arith(arith::_con_FLOAT_TO_INT), _v_mode(p_mode), _v_from(p_from),
-              _v_to(p_to)
+          : arith(arith::_con_FLOAT_TO_INT), _v_mode(p_mode), _v_from(p_from), _v_to(p_to)
         { }
         ~FLOAT_TO_INT ();
         static FLOAT_TO_INT * make (rounding_mode p_mode, int p_from, int p_to)
@@ -604,7 +606,11 @@ namespace CFG_Prim {
         FNEG,
         FABS,
         FCOPYSIGN,
-        FSQRT
+        FSQRT,
+        FCEIL,
+        FFLOOR,
+        FROUND,
+        FTRUNC
     };
     // pickler suppressed for pureop
     pureop read_pureop (asdl::instream & is);
@@ -871,8 +877,7 @@ namespace CFG_Prim {
     class RAW_SELECT : public pure {
       public:
         RAW_SELECT (numkind p_kind, int p_sz, int p_offset)
-          : pure(pure::_con_RAW_SELECT), _v_kind(p_kind), _v_sz(p_sz),
-              _v_offset(p_offset)
+          : pure(pure::_con_RAW_SELECT), _v_kind(p_kind), _v_sz(p_sz), _v_offset(p_offset)
         { }
         ~RAW_SELECT ();
         static RAW_SELECT * make (numkind p_kind, int p_sz, int p_offset)

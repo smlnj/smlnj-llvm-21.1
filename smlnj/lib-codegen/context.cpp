@@ -127,12 +127,20 @@ Context::Context (TargetInfo const *target)
 
     this->_fma32.init(llvm::Intrinsic::fma, this->f32Ty);
     this->_fabs32.init(llvm::Intrinsic::fabs, this->f32Ty);
-    this->_sqrt32.init(llvm::Intrinsic::sqrt, this->f32Ty);
     this->_copysign32.init(llvm::Intrinsic::copysign, this->f32Ty);
+    this->_sqrt32.init(llvm::Intrinsic::sqrt, this->f32Ty);
+    this->_ceil32.init(llvm::Intrinsic::ceil, this->f32Ty);
+    this->_floor32.init(llvm::Intrinsic::floor, this->f32Ty);
+    this->_round32.init(llvm::Intrinsic::round, this->f32Ty);
+    this->_trunc32.init(llvm::Intrinsic::trunc, this->f32Ty);
     this->_fma64.init(llvm::Intrinsic::fma, this->f64Ty);
     this->_fabs64.init(llvm::Intrinsic::fabs, this->f64Ty);
-    this->_sqrt64.init(llvm::Intrinsic::sqrt, this->f64Ty);
     this->_copysign64.init(llvm::Intrinsic::copysign, this->f64Ty);
+    this->_sqrt64.init(llvm::Intrinsic::sqrt, this->f64Ty);
+    this->_ceil64.init(llvm::Intrinsic::ceil, this->f64Ty);
+    this->_floor64.init(llvm::Intrinsic::floor, this->f64Ty);
+    this->_round64.init(llvm::Intrinsic::round, this->f64Ty);
+    this->_trunc64.init(llvm::Intrinsic::trunc, this->f64Ty);
 
     this->_readReg = nullptr;
     this->_spRegMD = nullptr;

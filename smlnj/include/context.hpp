@@ -507,12 +507,20 @@ class Context : public llvm::LLVMContext {
 
     llvm::Function *fma32 () const { return this->_fma32.get(this); }
     llvm::Function *fabs32 () const { return this->_fabs32.get(this); }
-    llvm::Function *sqrt32 () const { return this->_sqrt32.get(this); }
     llvm::Function *copysign32 () const { return this->_copysign32.get(this); }
+    llvm::Function *sqrt32 () const { return this->_sqrt32.get(this); }
+    llvm::Function *ceil32 () const { return this->_ceil32.get(this); }
+    llvm::Function *floor32 () const { return this->_floor32.get(this); }
+    llvm::Function *round32 () const { return this->_round32.get(this); }
+    llvm::Function *trunc32 () const { return this->_trunc32.get(this); }
     llvm::Function *fma64 () const { return this->_fma64.get(this); }
     llvm::Function *fabs64 () const { return this->_fabs64.get(this); }
-    llvm::Function *sqrt64 () const { return this->_sqrt64.get(this); }
     llvm::Function *copysign64 () const { return this->_copysign64.get(this); }
+    llvm::Function *sqrt64 () const { return this->_sqrt64.get(this); }
+    llvm::Function *ceil64 () const { return this->_ceil64.get(this); }
+    llvm::Function *floor64 () const { return this->_floor64.get(this); }
+    llvm::Function *round64 () const { return this->_round64.get(this); }
+    llvm::Function *trunc64 () const { return this->_trunc64.get(this); }
     /// @}
 
   /***** shorthand for LLVM integer instructions (with argument coercions) *****/
@@ -871,12 +879,20 @@ class Context : public llvm::LLVMContext {
     // floating-point intrinsic functions
     Intrinsic _fma32;           // @llvm.fma.f32
     Intrinsic _fabs32;          // @llvm.fabs.f32
-    Intrinsic _sqrt32;          // @llvm.sqrt.f32
     Intrinsic _copysign32;      // @llvm.copysign.f32
+    Intrinsic _sqrt32;          // @llvm.sqrt.f32
+    Intrinsic _ceil32;          // @llvm.ceil.f32
+    Intrinsic _floor32;         // @llvm.floor.f32
+    Intrinsic _round32;         // @llvm.round.f32
+    Intrinsic _trunc32;         // @llvm.trunc.f32
     Intrinsic _fma64;           // @llvm.fma.f64
     Intrinsic _fabs64;          // @llvm.fabs.f64
-    Intrinsic _sqrt64;          // @llvm.sqrt.f64
     Intrinsic _copysign64;      // @llvm.copysign.f64
+    Intrinsic _sqrt64;          // @llvm.sqrt.f64
+    Intrinsic _ceil64;          // @llvm.ceil.f64
+    Intrinsic _floor64;         // @llvm.floor.f64
+    Intrinsic _round64;         // @llvm.round.f64
+    Intrinsic _trunc64;         // @llvm.trunc.f64
 
     /// cached @llvm.read_register + meta data to access stack
     llvm::Function *_readReg;

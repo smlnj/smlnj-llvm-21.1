@@ -283,6 +283,22 @@ namespace CFG_Prim {
                  return cxt->build().CreateCall(
                     (this->get_sz() == 32) ? cxt->sqrt32() : cxt->sqrt64(),
                     args);
+            case pureop::FCEIL:
+                 return cxt->build().CreateCall(
+                    (this->get_sz() == 32) ? cxt->ceil32() : cxt->ceil64(),
+                    args);
+            case pureop::FFLOOR:
+                 return cxt->build().CreateCall(
+                    (this->get_sz() == 32) ? cxt->floor32() : cxt->floor64(),
+                    args);
+            case pureop::FROUND:
+                 return cxt->build().CreateCall(
+                    (this->get_sz() == 32) ? cxt->round32() : cxt->round64(),
+                    args);
+            case pureop::FTRUNC:
+                 return cxt->build().CreateCall(
+                    (this->get_sz() == 32) ? cxt->trunc32() : cxt->trunc64(),
+                    args);
         } // switch
 
     } // PURE_ARITH::codegen
