@@ -56,6 +56,7 @@ static TargetInfo Arm64Info = {
 	"e-" DL_MANGLE "-i64:64-i128:128-n32:64-S128", // LLVM data layout string
 	"sp",				// stack-pointer name
 	llvm::Triple::aarch64,          // LLVM architecture type
+        "generic",                      // CPU name
 	8, 64,				// word size in bytes and bits
 	22,				// numGPArgRegs
 	32,				// numFPArgRegs
@@ -87,6 +88,9 @@ static TargetInfo X86_64Info = {
 	"e-" DL_MANGLE "-i64:64-n8:16:32:64-S128", // LLVM data layout string
 	"rsp",				// stack-pointer name
 	llvm::Triple::x86_64,           // LLVM architecture type
+        "haswell",                      // CPU name; haswell was introduced in 2013
+                                        // and guarantees AVX2 and earlier instructions
+        "",                             // features string
 	8, 64,				// word size in bytes and bits
 	11,				// numGPArgRegs
 	16,				// numFPArgRegs

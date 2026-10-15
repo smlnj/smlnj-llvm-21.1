@@ -48,6 +48,10 @@ struct TargetInfo {
     std::string dataLayout;             ///< LLVM data layout string
     std::string spName;                 ///< the assembly name of the stack pointer register
     llvm::Triple::ArchType arch;        ///< target architecture
+    std::string cpuName;                ///< the name of the CPU; one can specify "generic",
+                                        ///  but more specific names will produce better
+                                        ///  code.
+    std::string features;               ///< comma-separated list of CPU features
     int wordSzB;                        ///< size in bytes of ML word (should also be the
                                         ///  same as the native pointer size)
     int wordSz;                         ///< size in bits of ML word (== 8*wordSzB)

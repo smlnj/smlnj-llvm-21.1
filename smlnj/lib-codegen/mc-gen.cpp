@@ -72,8 +72,8 @@ MCGen::MCGen (TargetInfo const *info)
 // that are recognized
     std::unique_ptr<llvm::TargetMachine> tgtMachine(target->createTargetMachine(
 	triple,
-	"generic",		/* CPU name */
-	"",			/* features string */
+	info->cpuName,
+	info->features,
 	tgtOptions,
 	llvm::Reloc::PIC_,
 	std::optional<llvm::CodeModel::Model>(),
