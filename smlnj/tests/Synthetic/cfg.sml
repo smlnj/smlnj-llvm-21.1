@@ -58,6 +58,7 @@ structure CFG_Prim =
       | FMADD
       | FNEG | FABS | FCOPYSIGN
       | FSQRT
+      | FCEIL | FFLOOR | FROUND | FTRUNC
 
     datatype pure
       = PURE_ARITH of {oper : pureop, sz : int}

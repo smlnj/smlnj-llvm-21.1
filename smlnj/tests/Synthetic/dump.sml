@@ -31,8 +31,8 @@ structure Dump : sig
 	    ("ex09.pkl", Ex9.cu),
 	    ("ex10.pkl", Ex10.cu),
 	    ("ex11.pkl", Ex11.cu),
-	    ("ex12.pkl", Ex12.cu)(*,
-	    ("ex13.pkl", Ex13.cu)*)
+	    ("ex12.pkl", Ex12.cu),
+	    ("ex13.pkl", Ex13.cu)
 	  ]
 
   end

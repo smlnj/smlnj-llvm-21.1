@@ -24,9 +24,7 @@ Library
   structure Ex10	(* test bit counting operations on 64-bit words *)
   structure Ex11	(* test rotation operations on 64-bit words *)
   structure Ex12	(* test raw C call *)
-(*
-  structure Ex13	(* test trapping 32-bit arithmetic *)
-*)
+  structure Ex13	(* test floating-point intrinsics *)
 
 is
 
@@ -51,9 +49,7 @@ is
   ex10.sml
   ex11.sml
   ex12.sml
-(*
   ex13.sml
-*)
 
   dump.sml
   obj-desc.sml
