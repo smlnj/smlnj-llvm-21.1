@@ -313,6 +313,12 @@ public:
         llvm::JITSymbolResolver::OnResolvedFunction orf
     ) override
     {
+#ifdef DEBUG_CODEGEN
+        llvm::dbgs() << "# SymbolResolver::lookup\n";
+        for (auto sym : syms) {
+            llvm::dbgs() << "## symbol = " << std::string_view(sym) << "\n";
+        }
+#endif
         /* there should not be any symbols to look up, since
          * the generated LLVM is closed.
          */
