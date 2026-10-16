@@ -57,6 +57,7 @@ static TargetInfo Arm64Info = {
 	"sp",				// stack-pointer name
 	llvm::Triple::aarch64,          // LLVM architecture type
         "generic",                      // CPU name
+        "",                             // features string
 	8, 64,				// word size in bytes and bits
 	22,				// numGPArgRegs
 	32,				// numFPArgRegs
